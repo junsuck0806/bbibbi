@@ -1,0 +1,40 @@
+name: update-releases
+
+on:
+  schedule:
+    - cron: '0 21 * * *'   # 한국시간 오전 6시
+    - cron: '0 10 * * *'   # 한국시간 오후 7시 (저녁 6시 발매곡 반영용)
+  workflow_dispatch:        # Actions 탭에서 수동 실행
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-releases
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 신곡 수집
+        run: node scripts/fetch-releases.mjs
+
+      - name: 변경된 데이터 저장
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --staged --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "chore: update releases"
+            git push
+          fi
