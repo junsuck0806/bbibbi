@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>신곡 알림판 | 최근 5일 새 앨범·곡</title>
+  <meta name="description" content="최근 5일 안에 발매된 국내·해외 앨범과 싱글을 장르별로 모아 봅니다">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap">
+      <h1>🎵 신곡 알림판</h1>
+      <p class="sub">최근 5일 안에 나온 앨범·싱글을 장르별로, 국내/해외로 나눠 보여줍니다</p>
+      <p id="meta" class="meta">불러오는 중...</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="controls">
+      <div class="row"><span class="label">날짜</span><div id="day-filter" class="chips"></div></div>
+      <div class="row"><span class="label">지역</span><div id="region-filter" class="chips"></div></div>
+      <div class="row"><span class="label">장르</span><div id="genre-filter" class="chips"></div></div>
+      <div class="row"><span class="label">종류</span><div id="type-filter" class="chips"></div></div>
+      <input type="search" id="q" placeholder="아티스트 또는 제목 검색">
+    </section>
+
+    <p id="notice" class="notice" hidden></p>
+    <div id="board"></div>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <p>발매 정보: MusicBrainz · 커버 이미지: Cover Art Archive</p>
+      <p>커뮤니티 DB 기반이라 일부 발매가 늦게 반영되거나 빠질 수 있습니다.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
