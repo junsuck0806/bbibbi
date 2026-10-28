@@ -4,10 +4,10 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 
 // ===== 설정 =====
 // MusicBrainz는 연락처가 들어간 User-Agent를 요구합니다. 영문으로, 본인 저장소 주소로 바꾸세요.
-const CONTACT = 'https://github.com/YOUR_ID/new-music-board';
+const CONTACT = 'https://github.com/junsuck0806/bbibbi';
 const USER_AGENT = `new-music-board/1.0 ( ${CONTACT} )`;
 
-const DAYS_BACK = 5;              // 오늘 포함, 5일 전 발매분까지 (app.js의 값과 같게)
+const DAYS_BACK = 1;              // 오늘 포함, 5일 전 발매분까지 (app.js의 값과 같게)
 const PAGE_SIZE = 100;
 const MAX_PAGES = 40;             // 안전장치: 최대 4,000건
 const MAX_ARTIST_LOOKUPS = 1200;  // 한 번 실행에서 새로 조회할 아티스트 수 상한
