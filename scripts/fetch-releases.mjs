@@ -79,21 +79,46 @@ async function mb(path, params) {
 
 // ===== 1) 기간 안에 발매된 앨범/EP/싱글 목록 =====
 async function fetchReleaseGroups(from, to) {
-  const query = `firstreleasedate:[${from} TO ${to}] AND (primarytype:album OR primarytype:single OR primarytype:ep)`;
+  const types = ['album', 'single', 'ep'];
   const all = [];
-  let offset = 0;
-  let total = Infinity;
-  for (let page = 0; page < MAX_PAGES && offset < total; page++) {
-    const data = await mb('release-group', { query, limit: PAGE_SIZE, offset });
-    if (!data) break;
-    total = data.count ?? 0;
-    const list = data['release-groups'] || [];
-    if (list.length === 0) break;
-    all.push(...list);
-    offset += list.length;
-    console.log(`  목록 ${all.length}/${total}`);
+  const seen = new Set();
+  const start = new Date(`${from}T12:00:00Z`);
+  const end = new Date(`${to}T12:00:00Z`);
+
+  for (const day = new Date(start); day <= end; day.setUTCDate(day.getUTCDate() + 1)) {
+    const date = day.toISOString().slice(0, 10);
+
+    for (const type of types) {
+      const query = `firstreleasedate:${date} AND primarytype:${type}`;
+      let offset = 0;
+      let total = Infinity;
+
+      // MusicBrainz search 결과는 검색당 최대 500건까지만 조회합니다.
+      while (offset < total && offset < 500) {
+        const data = await mb('release-group', { query, limit: PAGE_SIZE, offset });
+        if (!data) break;
+
+        total = data.count ?? 0;
+        const list = data['release-groups'] || [];
+        if (list.length === 0) break;
+
+        for (const group of list) {
+          if (!seen.has(group.id)) {
+            seen.add(group.id);
+            all.push(group);
+          }
+        }
+
+        offset += list.length;
+        console.log(`  ${date} ${type}: ${Math.min(offset, total)}/${total}`);
+      }
+
+      if (total > 500) {
+        console.warn(`${date} ${type}: 검색 결과 ${total}건 중 앞의 500건만 가져왔습니다.`);
+      }
+    }
   }
-  if (total > MAX_PAGES * PAGE_SIZE) console.warn(`총 ${total}건 중 앞의 ${all.length}건만 가져왔습니다.`);
+
   return all;
 }
 
