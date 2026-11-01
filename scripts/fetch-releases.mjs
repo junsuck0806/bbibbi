@@ -23,7 +23,8 @@ const GENRE_RULES = [
   { name: '록/메탈', re: /rock|metal|punk|hardcore|grunge|\bemo\b/i },
   { name: '인디/얼터너티브', re: /indie|alternative|shoegaze|lo-?fi|bedroom|dream pop/i },
   { name: '댄스/일렉트로닉', re: /electro|edm|house|techno|trance|dance|dubstep|drum and bass|synth|disco|ambient|future bass/i },
-  { name: '재즈/블루스/클래식', re: /jazz|blues|classical|orchestra|opera|baroque|symphon/i },
+  { name: '재즈', re: /jazz/i },
+  { name: '블루스/클래식', re: /blues|classical|orchestra|opera|baroque|symphon/i },
   { name: '포크/컨트리/어쿠스틱', re: /folk|country|bluegrass|acoustic|singer-songwriter|americana/i },
   { name: '트로트', re: /trot|트로트/i },
   { name: '발라드', re: /ballad|발라드/i },
@@ -253,3 +254,4 @@ main().catch((e) => {
   console.error(e);
   process.exit(1);
 });
+
