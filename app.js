@@ -4,7 +4,7 @@ const DATA_URL = 'data/releases.json';
 const WEEK = ['일', '월', '화', '수', '목', '금', '토'];
 const GENRE_ORDER = [
   '팝', '발라드', '힙합/랩', 'R&B/소울', '록/메탈', '인디/얼터너티브',
-  '댄스/일렉트로닉', '재즈/블루스/클래식', '포크/컨트리/어쿠스틱', '트로트', 'OST/사운드트랙', '기타',
+  '댄스/일렉트로닉', '재즈', '블루스/클래식', '포크/컨트리/어쿠스틱', '트로트', 'OST/사운드트랙', '기타',
 ];
 const TYPE_LABEL = { Album: '앨범', EP: 'EP', Single: '싱글' };
 const REGIONS = [
@@ -103,7 +103,8 @@ function renderControls() {
     { value: 'overseas', label: '해외' },
   ]);
 
-  const genres = [...new Set(ITEMS.map((it) => it.genre))].sort((a, b) => rank(a) - rank(b));
+  // 장르 항목은 데이터가 0건이어도 표시하고, 예상 목록 밖의 장르도 함께 보여줍니다.
+  const genres = [...new Set([...GENRE_ORDER, ...ITEMS.map((it) => it.genre)])].sort((a, b) => rank(a) - rank(b));
   buildChips('genre-filter', 'genre', 'genre', [
     { value: 'all', label: '전체' },
     ...genres.map((g) => ({ value: g, label: g })),
@@ -253,3 +254,4 @@ $('q').addEventListener('input', (e) => {
 });
 
 load();
+
